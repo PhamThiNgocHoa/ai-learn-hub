@@ -1,38 +1,62 @@
+import { useState } from "react";
 import useProduct from "../../hooks/useProduct.ts";
-import CardProduct from "./CardProduct.tsx";
 import usePagination from "../../hooks/usePagination.ts";
+import ProductFilter from "./ProductFilter.tsx";
+import ProductDetailModal from "../productDetail/ProductDetailModal.tsx";
+import ProductSection from "./ProductSection.tsx";
+import { PriceFilter } from "../../data/enum/PriceFilter.ts";
+import type { Product } from "../../data/types/product.ts";
 
 const ProductList = () => {
-    const { productList } = useProduct();
-    const {
-        currentPage,
-        setCurrentPage,
-        totalPages,
-        currentItems: currentProducts,
-    } = usePagination(productList, 8);
+    const [filter, setFilter] = useState<PriceFilter>(PriceFilter.All);
+    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const { productList } = useProduct(filter);
+
+    const books = productList.filter((p) => p.type === "Book");
+    const courses = productList.filter((p) => p.type === "Course");
+
+    const bookPagination = usePagination(books, 8);
+    const coursePagination = usePagination(courses, 8);
+
+    const handleOpenModal = (product: Product) => {
+        setSelectedProduct(product);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setSelectedProduct(null);
+        setIsModalOpen(false);
+    };
 
     return (
-        <div className="space-y-6">
-            <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-4">
-                {currentProducts.map((product) => (
-                    <CardProduct key={product.id} product={product} />
-                ))}
-            </div>
+        <div className="space-y-10">
+            <ProductFilter filter={filter} setFilter={setFilter} />
 
-            <div className="flex justify-center gap-2 mt-4">
-                {Array.from({ length: totalPages }, (_, index) => (
-                    <button
-                        key={index + 1}
-                        onClick={() => setCurrentPage(index + 1)}
-                        className={`px-4 py-2 border rounded 
-                            ${currentPage === index + 1
-                            ? "bg-orange-500 text-white"
-                            : "bg-white text-black"}`}
-                    >
-                        {index + 1}
-                    </button>
-                ))}
-            </div>
+            <ProductSection
+                title="Tài liệu & Sách"
+                products={bookPagination.currentItems}
+                currentPage={bookPagination.currentPage}
+                totalPages={bookPagination.totalPages}
+                setCurrentPage={bookPagination.setCurrentPage}
+                onViewDetail={handleOpenModal}
+            />
+
+            <ProductSection
+                title="Khóa học"
+                products={coursePagination.currentItems}
+                currentPage={coursePagination.currentPage}
+                totalPages={coursePagination.totalPages}
+                setCurrentPage={coursePagination.setCurrentPage}
+                onViewDetail={handleOpenModal}
+            />
+
+            <ProductDetailModal
+                product={selectedProduct}
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+            />
         </div>
     );
 };

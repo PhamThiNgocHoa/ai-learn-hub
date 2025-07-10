@@ -1,17 +1,20 @@
 import React from "react";
 import type {Product} from "../../data/types/product.ts";
-import {useNavigate} from "react-router-dom";
 import {AiOutlineEye} from "react-icons/ai";
 import LikeButton from "../button/LikeButton.tsx";
 import CustomButton from "../button/CustomButton.tsx";
+import useProduct from "../../hooks/useProduct.ts";
+import {useUser} from "../../hooks/useUser.ts";
 
 interface Props {
     product: Product;
+    onViewDetail: () => void;
 }
 
-const CardProduct: React.FC<Props> = ({product}) => {
-    const navigate = useNavigate();
+const CardProduct: React.FC<Props> = ({product, onViewDetail}) => {
     const [isFavorite, setIsFavorite] = React.useState(false);
+    const {handleSaveViewedProduct, handleSaveHeartedProduct} = useProduct();
+    const {userId} = useUser();
     const discountPrice = product.price - (product.price * product.discountPercent) / 100;
 
 
@@ -37,7 +40,7 @@ const CardProduct: React.FC<Props> = ({product}) => {
                         <p className="text-orange-500 font-bold text-sm sm:text-base">
                             {discountPrice.toLocaleString()}đ
                         </p>
-                        <p className="text-gray-500 line-through text-xs sm:text-sm px-6">
+                        <p className="hidden sm:block text-gray-500 line-through text-sm px-6">
                             {product.price.toLocaleString()}đ
                         </p>
                     </>
@@ -47,18 +50,20 @@ const CardProduct: React.FC<Props> = ({product}) => {
                     </p>
                 )}
             </div>
-
             <div className="flex justify-between items-center mt-2 sm:mt-3 gap-1">
-                <CustomButton
-                    onClick={() => navigate(`/product/${product.id}`)}
-                    title="Xem chi tiết"
-                >
+                <CustomButton onClick={() => {
+                    onViewDetail();
+                    handleSaveViewedProduct(userId, product);
+                }} title="Xem chi tiết">
                     <AiOutlineEye className="text-lg sm:text-xl"/>
                     <span className="hidden sm:inline ml-1">Xem chi tiết</span>
                 </CustomButton>
                 <LikeButton
                     isLiked={isFavorite}
-                    onToggle={() => setIsFavorite(!isFavorite)}
+                    onToggle={() => {
+                        handleSaveHeartedProduct(userId, product);
+                        setIsFavorite(!isFavorite);
+                    }}
                 />
             </div>
         </div>

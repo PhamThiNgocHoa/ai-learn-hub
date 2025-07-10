@@ -12,7 +12,7 @@ const CustomButton = ({ onClick, title, children, className = "" }: CustomButton
         <button
             onClick={onClick}
             title={title}
-            className={`bg-teal-500 text-white p-2 sm:px-4 sm:py-2 rounded text-sm sm:text-base flex items-center justify-center hover:bg-teal-600 ${className}`}
+            className={`bg-teal-500 text-white p-2 mt-2 sm:px-4 sm:py-2 rounded text-sm sm:text-base flex items-center justify-center hover:bg-teal-600 ${className}`}
         >
             {children}
         </button>
