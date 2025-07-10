@@ -67,11 +67,11 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({product, isOpen,
                         </p>
                         <p className="text-sm text-gray-700 mt-4">{product.longDescription}</p>
 
-                        {product.type === "book" && (
+                        {product.type === "Book" && (
                             <p className="mt-2 text-sm text-gray-600">Số trang: {product.totalLessons}</p>
                         )}
 
-                        {product.type === "course" && (
+                        {product.type === "Course" && (
                             <p className="mt-2 text-sm text-gray-600">Số bài học: {product.totalLessons}</p>
                         )}
 
@@ -80,7 +80,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({product, isOpen,
                             {[1, 2, 3, 4, 5].map((star) => (
                                 <svg
                                     key={star}
-                                    className={`w-5 h-5 ${star <= product.rating ? "text-yellow-400" : "text-gray-300"}`}
+                                    className={`w-5 h-5 ${star <= (product.rating ?? 0) ? "text-yellow-400" : "text-gray-300"}`}
                                     fill="currentColor"
                                     viewBox="0 0 20 20"
                                 >

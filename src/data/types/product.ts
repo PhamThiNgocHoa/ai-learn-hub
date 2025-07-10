@@ -11,7 +11,8 @@ export interface Product {
     longDescription: string;
     isHot: boolean;
     isLike: boolean;
-    type: "Course" | "Book";
+    type: string;
+    rating?: number;
 }
 
 export const products: Product[] = [
@@ -26,6 +27,7 @@ export const products: Product[] = [
         longDescription: "Khóa học Tiếng Anh Giao tiếp được thiết kế dành cho người mới bắt đầu và người học muốn cải thiện khả năng nói chuyện hằng ngày. Bạn sẽ được học qua các tình huống thực tế, thực hành với giảng viên và cải thiện phản xạ tiếng Anh.",
         isHot: true,
         isLike: false,
+        rating:2,
         type: "Course"
     },
     {
@@ -39,6 +41,7 @@ export const products: Product[] = [
         longDescription: "Giáo trình Lập trình React giúp bạn xây dựng nền tảng vững chắc về thư viện React – một công cụ phổ biến trong phát triển web hiện đại. Khóa học bao gồm các khái niệm từ cơ bản như JSX, component, state, props đến các kỹ thuật nâng cao như React Router, quản lý trạng thái với Context API và Redux...",
         isHot: true,
         isLike: false,
+        rating:2,
         type: "Book"
     },
     {
@@ -52,6 +55,7 @@ export const products: Product[] = [
         longDescription: "Tài liệu IELTS Writing cung cấp hướng dẫn chi tiết và chiến lược làm bài cho cả hai phần Writing Task 1 và Task 2. Nội dung bao gồm phân tích các dạng bài phổ biến, từ vựng học thuật, cấu trúc bài viết chuẩn, các mẫu câu hữu ích và bài mẫu band cao.",
         isHot: true,
         isLike: false,
+        rating:2,
         type: "Book"
     },
     {
@@ -65,6 +69,7 @@ export const products: Product[] = [
         longDescription: "Cuốn sách luyện thi TOEIC này được thiết kế nhằm giúp người học nắm vững cấu trúc đề thi TOEIC, đồng thời cải thiện kỹ năng nghe và đọc hiểu một cách hiệu quả.",
         isHot: false,
         isLike: false,
+        rating:2,
         type: "Book"
     },
     {
@@ -78,6 +83,7 @@ export const products: Product[] = [
         longDescription: "Khóa học lập trình Python cơ bản được thiết kế dành cho người mới bắt đầu, giúp bạn xây dựng nền tảng vững chắc về lập trình với ngôn ngữ Python.",
         isHot: false,
         isLike: false,
+        rating:2,
         type: "Course"
     },
     {
@@ -91,6 +97,7 @@ export const products: Product[] = [
         longDescription: "Hướng dẫn Java từ A đến Z là tài liệu học lập trình Java toàn diện, dành cho cả người mới bắt đầu và những ai muốn nâng cao kỹ năng.",
         isHot: true,
         isLike: false,
+        rating:2,
         type: "Book"
     },
     {
@@ -104,6 +111,7 @@ export const products: Product[] = [
         longDescription: "Khóa học thiết kế UI/UX cung cấp kiến thức từ cơ bản đến nâng cao về cách xây dựng giao diện người dùng (UI) hấp dẫn và trải nghiệm người dùng (UX) hiệu quả.",
         isHot: false,
         isLike: false,
+        rating:2,
         type: "Course"
     },
     {
@@ -117,6 +125,7 @@ export const products: Product[] = [
         longDescription: "Khóa học SQL nâng cao được thiết kế dành cho những người đã có kiến thức cơ bản về SQL và mong muốn nâng cao kỹ năng làm việc với cơ sở dữ liệu.",
         isHot: true,
         isLike: false,
+        rating:2,
         type: "Course"
     },
     {
@@ -130,6 +139,7 @@ export const products: Product[] = [
         longDescription: "Tài liệu học HTML & CSS là bộ hướng dẫn toàn diện dành cho người mới bắt đầu muốn xây dựng nền tảng vững chắc về phát triển web.",
         isHot: false,
         isLike: false,
+        rating:2,
         type: "Book"
     },
     {
@@ -143,6 +153,7 @@ export const products: Product[] = [
         longDescription: "Khóa học Node.js thực chiến giúp bạn nắm vững cách xây dựng các ứng dụng web phía server bằng JavaScript.",
         isHot: true,
         isLike: false,
+        rating:2,
         type: "Course"
     },
     {
@@ -156,6 +167,7 @@ export const products: Product[] = [
         longDescription: "Khóa học Lập trình Android với Kotlin giúp bạn xây dựng ứng dụng Android hiện đại bằng ngôn ngữ Kotlin.",
         isHot: false,
         isLike: false,
+        rating:2,
         type: "Course"
     },
     {
@@ -169,6 +181,7 @@ export const products: Product[] = [
         longDescription: "Khóa học Học Vue.js từ cơ bản đến nâng cao được thiết kế để giúp bạn nhanh chóng làm chủ Vue – một trong những framework JavaScript phổ biến nhất hiện nay.",
         isHot: true,
         isLike: false,
+        rating:2,
         type: "Course"
     },
     {
@@ -182,6 +195,7 @@ export const products: Product[] = [
         longDescription: "Khóa học MongoDB chuyên sâu giúp bạn hiểu rõ về cách hoạt động của cơ sở dữ liệu NoSQL phổ biến này.",
         isHot: false,
         isLike: false,
+        rating:2,
         type: "Course"
     },
     {
@@ -195,6 +209,7 @@ export const products: Product[] = [
         longDescription: "Khóa học Tự học Excel nâng cao được thiết kế dành cho những ai đã nắm vững kiến thức cơ bản và muốn nâng cao kỹ năng xử lý dữ liệu, phân tích và tự động hóa trong Excel.",
         isHot: false,
         isLike: false,
+        rating:2,
         type: "Course"
     },
     {
@@ -208,6 +223,7 @@ export const products: Product[] = [
         longDescription: "Khóa học Học lập trình C++ cơ bản giúp người học từng bước tiếp cận ngôn ngữ lập trình C++ từ những kiến thức nền tảng nhất.",
         isHot: false,
         isLike: false,
+        rating:2,
         type: "Course"
     },
     {
@@ -221,6 +237,7 @@ export const products: Product[] = [
         longDescription: "Khóa học Adobe Photoshop cho người mới được thiết kế dành riêng cho người bắt đầu làm quen với thiết kế đồ họa.",
         isHot: true,
         isLike: false,
+        rating:2,
         type: "Course"
     },
     {
@@ -234,6 +251,7 @@ export const products: Product[] = [
         longDescription: "Khóa học Git & GitHub cung cấp kiến thức và kỹ năng để quản lý mã nguồn, làm việc nhóm hiệu quả qua hệ thống Git.",
         isHot: false,
         isLike: false,
+        rating:2,
         type: "Course"
     },
     {
@@ -247,6 +265,7 @@ export const products: Product[] = [
         longDescription: "Khóa học Firebase cho web hướng dẫn bạn cách sử dụng nền tảng Firebase để xây dựng ứng dụng web realtime.",
         isHot: false,
         isLike: false,
+        rating:2,
         type: "Course"
     },
     {
@@ -260,6 +279,7 @@ export const products: Product[] = [
         longDescription: "Khóa học JavaScript cơ bản giúp bạn làm quen với ngôn ngữ lập trình phổ biến nhất trên web.",
         isHot: true,
         isLike: false,
+        rating:2,
         type: "Course"
     }
 ];
