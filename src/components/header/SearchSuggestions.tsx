@@ -11,7 +11,7 @@ const SearchSuggestions = ({ suggestions, onSelect }: Props) => {
             {suggestions.map((item, index) => (
                 <li
                     key={index}
-                    className="px-4 py-2 hover:bg-teal-100 cursor-pointer"
+                    className="px-4 py-2 hover:bg-teal-100 cursor-pointer truncate"
                     onClick={() => onSelect(item)}
                 >
                     {item}

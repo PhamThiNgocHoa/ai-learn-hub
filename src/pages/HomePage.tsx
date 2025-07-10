@@ -1,12 +1,15 @@
 import Header from "../components/header/Header.tsx";
+import Footer from "../components/footer/Footer.tsx";
+import ProductList from "../components/product/ProductList.tsx";
 
 const HomePage = () => {
     return (
-        <div className="w-screen bg-red-100 text-black">
-            <Header/>
-            <p className=" text-red-500 text-lg">
-                Đây là đoạn chữ màu đỏ nằm bên trái.
-            </p>
+        <div className="w-screen text-black">
+                <Header/>
+                <div className="p-10">
+                    <ProductList/>
+                </div>
+                <Footer/>
         </div>
     );
 };
