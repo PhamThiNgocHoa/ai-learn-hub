@@ -1,5 +1,5 @@
 const AuthButtons = () => (
-    <div className="flex justify-center sm:justify-end gap-2">
+    <div className="hidden sm:inline-block justify-center sm:justify-end space-x-2">
         <button className="hidden sm:inline-block px-4 py-2 text-teal-500 border border-teal-500 rounded hover:bg-teal-100 transition">
             Đăng ký
         </button>

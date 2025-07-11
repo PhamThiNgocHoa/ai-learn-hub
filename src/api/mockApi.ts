@@ -1,22 +1,23 @@
-// mockApi.ts
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import {type Product, products} from "../data/types/product.ts";
 
-const mock = new MockAdapter(axios, {delayResponse: 300}); // delay cho giống thật
-
-// Dữ liệu lưu theo từng user
-const userViewedProducts: Record<string, Product[]> = {};
-const userHeartedProducts: Record<string, Product[]> = {};
+const mock = new MockAdapter(axios, {delayResponse: 300});
 
 mock.onGet("/api/getListProduct").reply(200, {
     data: products,
 });
 
-mock.onGet(/\/api\/viewedProducts\/\d+/).reply((config) => {
-    const userId = config.url?.split("/").pop() || "0";
-    return [200, {data: userViewedProducts[userId] || []}];
+mock.onGet(/\/api\/viewedProducts\/[^/]+/).reply((config) => {
+    const match = config.url?.match(/\/api\/viewedProducts\/([^/]+)/);
+    const userId = match?.[1];
+
+    const key = `viewedProducts_${userId}`;
+    const data = JSON.parse(localStorage.getItem(key) || "[]");
+
+    return [200, {data}];
 });
+
 
 mock.onPost("/api/viewedProducts").reply((config) => {
     const {userId, product} = JSON.parse(config.data);
@@ -35,10 +36,15 @@ mock.onPost("/api/viewedProducts").reply((config) => {
 });
 
 
-mock.onGet(/\/api\/heartedProducts\/\d+/).reply((config) => {
-    const userId = config.url?.split("/").pop() || "0";
-    return [200, {data: userHeartedProducts[userId] || []}];
+mock.onGet(/\/api\/heartedProducts\/[^/]+/).reply((config) => {
+    const match = config.url?.match(/\/api\/heartedProducts\/([^/]+)/);
+    const userId = match?.[1];
+    const heartedKey = `heartedProducts_${userId}`;
+    const hearted: Product[] = JSON.parse(localStorage.getItem(heartedKey) || "[]");
+
+    return [200, {data: hearted}];
 });
+
 
 mock.onPost("/api/heartedProducts").reply((config) => {
     const {userId, product} = JSON.parse(config.data);
@@ -56,28 +62,39 @@ mock.onPost("/api/heartedProducts").reply((config) => {
     return [200, {success: true}];
 });
 
+
 mock.onGet(/\/api\/suggestions\?userId=.*/).reply((config) => {
     const url = new URL(config.url!, window.location.origin);
     const userId = url.searchParams.get("userId");
 
     const viewedKey = `viewedProducts_${userId}`;
-    const heartedKey = `heartedProducts`;
+    const heartedKey = `heartedProducts_${userId}`;
 
-    const viewed = JSON.parse(localStorage.getItem(viewedKey) || "[]");
-    const heartedAll = JSON.parse(localStorage.getItem(heartedKey) || "{}") as Record<string, Product[]>;
-    const hearted = heartedAll[userId ?? ""] || [];
+    const viewed: Product[] = JSON.parse(localStorage.getItem(viewedKey) || "[]");
+    const hearted: Product[] = JSON.parse(localStorage.getItem(heartedKey) || "[]");
 
     const combinedMap = new Map<string, Product>();
-    [...viewed, ...hearted].forEach((product: Product) => {
+
+    [...viewed, ...hearted].forEach((product) => {
         if (!combinedMap.has(product.id)) {
             combinedMap.set(product.id, product);
         }
     });
 
-    const suggestions = Array.from(combinedMap.values()).slice(0, 6);
+    const baseKeywords: string[] = [...combinedMap.values()]
+        .flatMap((p) => p.name.toLowerCase().split(/\s+/))
+        .filter((word, index, self) => word.length > 2 && self.indexOf(word) === index);
 
-    return [200, { success: true, data: suggestions }];
+    const allProducts: Product[] = products;
+
+    const suggestions = allProducts.filter((product) => {
+        const name = product.name.toLowerCase();
+        return baseKeywords.some((keyword) => name.includes(keyword));
+    });
+
+    return [200, {success: true, data: suggestions}];
 });
+
 
 
 

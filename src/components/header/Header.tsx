@@ -9,7 +9,7 @@ const Header = () => {
     const {searchTerm, suggestions, handleSearch, setSearchTerm, setSuggestions} = useHeader();
 
     return (
-        <div className="w-full mt-4 bg-white shadow-md px-4 py-3 sm:px-6 md:px-8">
+        <div className="w-full bg-white shadow-md px-4 py-3 sm:px-6 md:px-8">
             <div className="flex items-center flex-row sm:justify-between gap-4">
                 <LogoSection/>
                 <div className="w-full sm:flex-1 relative">

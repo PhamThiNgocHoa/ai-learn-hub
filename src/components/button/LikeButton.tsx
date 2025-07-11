@@ -6,16 +6,17 @@ interface LikeButtonProps {
     onToggle: () => void;
 }
 
-const LikeButton: React.FC<LikeButtonProps> = ({ isLiked, onToggle }) => {
+const LikeButton: React.FC<LikeButtonProps & { className?: string }> = ({ isLiked, onToggle, className }) => {
     return (
         <button
             onClick={onToggle}
-            className="text-orange-500 text-xl sm:text-2xl hover:scale-110 transition-transform"
+            className={`text-orange-500 text-xl sm:text-2xl hover:scale-110 transition-transform ${className}`}
             title={isLiked ? "Bỏ yêu thích" : "Thêm vào yêu thích"}
         >
             {isLiked ? <AiFillHeart /> : <AiOutlineHeart />}
         </button>
     );
 };
+
 
 export default LikeButton;

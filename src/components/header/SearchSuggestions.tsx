@@ -7,7 +7,7 @@ const SearchSuggestions = ({ suggestions, onSelect }: Props) => {
     if (suggestions.length === 0) return null;
 
     return (
-        <ul className="absolute z-10 w-full bg-white border border-gray-200 rounded shadow-md mt-1 max-h-60 overflow-y-auto">
+        <ul className="absolute z-50 w-full bg-white border border-gray-200 rounded shadow-md mt-1 max-h-60 overflow-y-auto">
             {suggestions.map((item, index) => (
                 <li
                     key={index}

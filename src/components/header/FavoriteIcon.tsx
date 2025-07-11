@@ -1,7 +1,9 @@
+import {Link} from "react-router-dom";
+
 const FavoriteIcon = () => (
-    <div className="hidden sm:inline-block">
-        <i className="far fa-heart text-teal-600 sm:text-2xl cursor-pointer transition"></i>
-    </div>
+    <Link to="/hearted-products" className="">
+        <i className="far fa-heart text-teal-600 text-3xl cursor-pointer transition"></i>
+    </Link>
 );
 
 export default FavoriteIcon;

@@ -1,12 +1,25 @@
-import type {Product} from "../data/types/product";
+import {type Product, products} from "../data/types/product";
 import {useEffect, useState} from "react";
-import {getProducts, saveHeartedProduct, saveViewedProduct} from "../api/products";
+import {
+    getHeartedProducts,
+    getProducts,
+    getSuggestedProducts, getViewedProducts,
+    saveHeartedProduct,
+    saveViewedProduct
+} from "../api/products";
 import {PriceFilter} from "../data/enum/PriceFilter.ts";
 
-const useProduct = (filter: PriceFilter = PriceFilter.All) => {
+const useProduct = (userId: string, filter: PriceFilter = PriceFilter.All) => {
     const [productList, setProductList] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+    const [suggestedProducts, setSuggestedProducts] = useState<Product[]>([]);
+    const [suggestedLoading, setSuggestedLoading] = useState<boolean>(false);
+    const [heartedProducts, setHeartedProducts] = useState<Product[]>([]);
+    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [viewedProducts, setViewedProducts] = useState<Product[]>([]);
+
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -46,7 +59,13 @@ const useProduct = (filter: PriceFilter = PriceFilter.All) => {
         return productList.find(product => product.id === id);
     };
 
-    const handleSaveViewedProduct = async (userId: string, product: Product) => {
+    const relatedProducts = products.filter(product =>
+        heartedProducts.some(hp =>
+            product.name.toLowerCase().includes(hp.name.split(" ")[0].toLowerCase()) && product.id !== hp.id
+        )
+    );
+
+    const handleSaveViewedProduct = async (product: Product) => {
         try {
             await saveViewedProduct(userId, product);
         } catch (error) {
@@ -54,16 +73,88 @@ const useProduct = (filter: PriceFilter = PriceFilter.All) => {
         }
     };
 
-    const handleSaveHeartedProduct = async (userId: string, product: Product) => {
+    const handleToggleHearted = async (product: Product) => {
         try {
             await saveHeartedProduct(userId, product);
+            const updated = await getHeartedProducts(userId);
+            setHeartedProducts(updated);
         } catch (error) {
             console.error("Lỗi khi lưu sản phẩm yêu thích:", error);
         }
-    }
+    };
+
+    const handleGetSuggestedProducts = async () => {
+        setSuggestedLoading(true);
+        try {
+            const res = await getSuggestedProducts(userId);
+            setSuggestedProducts(res);
+            console.log("data", res);
+        } catch (err) {
+            console.error("Lỗi khi lấy gợi ý sản phẩm:", err);
+        } finally {
+            setSuggestedLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        const fetchHeartedProducts = async () => {
+            try {
+                const data = await getHeartedProducts(userId);
+                setHeartedProducts(data);
+            } catch (error) {
+                console.error("Lỗi khi lấy sản phẩm yêu thích:", error);
+            }
+        };
+
+        if (userId) {
+            fetchHeartedProducts();
+        }
+    }, [userId]);
+
+    useEffect(() => {
+        const fetchViewProducts = async () => {
+            try {
+                const data = await getViewedProducts(userId);
+                setViewedProducts(data);
+            } catch (error) {
+                console.error("Lỗi khi lấy sản phẩm da xem:", error);
+            }
+        };
+
+        if (userId) {
+            fetchViewProducts();
+        }
+    }, [userId]);
 
 
-    return {productList, getProductById, handleSaveViewedProduct, handleSaveHeartedProduct, loading, error};
+    const handleOpenModal = (product: Product) => {
+        setSelectedProduct(product);
+        setIsModalOpen(true);
+    };
+    const handleCloseModal = () => {
+        setSelectedProduct(null);
+        setIsModalOpen(false);
+    };
+
+    return {
+        productList,
+        relatedProducts,
+        getProductById,
+        handleSaveViewedProduct,
+        handleToggleHearted,
+        handleGetSuggestedProducts,
+        suggestedProducts,
+        suggestedLoading,
+        heartedProducts,
+        setHeartedProducts,
+        viewedProducts,
+        selectedProduct,
+        isModalOpen,
+        handleOpenModal,
+        handleCloseModal,
+        loading,
+        error
+    };
 };
 
 export default useProduct;

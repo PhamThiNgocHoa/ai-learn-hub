@@ -23,10 +23,10 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({product, isOpen,
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto">
-            <div className="bg-white rounded-lg p-6 w-full max-w-4xl relative shadow-lg">
+            <div className="bg-white rounded-lg p-6 w-full max-w-4xl relative shadow-lg max-h-screen overflow-y-auto">
                 <button
                     onClick={onClose}
-                    className="absolute top-2 right-2 text-gray-600 hover:text-red-500 text-xl font-bold"
+                    className="absolute top-4 right-2 text-gray-600 hover:text-red-500 text-xl font-bold"
                 >
                     ×
                 </button>
@@ -80,7 +80,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({product, isOpen,
                             {[1, 2, 3, 4, 5].map((star) => (
                                 <svg
                                     key={star}
-                                    className={`w-5 h-5 ${star <= (product.rating ?? 0) ? "text-yellow-400" : "text-gray-300"}`}
+                                    className={`w-5 h-5 ${star <= (product.rating ?? 0) ? "text-orange-400" : "text-gray-300"}`}
                                     fill="currentColor"
                                     viewBox="0 0 20 20"
                                 >

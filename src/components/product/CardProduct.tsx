@@ -9,12 +9,13 @@ import {useUser} from "../../hooks/useUser.ts";
 interface Props {
     product: Product;
     onViewDetail: () => void;
+    isHearted: boolean;
+    onHeartToggle: (product: Product) => void;
 }
 
-const CardProduct: React.FC<Props> = ({product, onViewDetail}) => {
-    const [isFavorite, setIsFavorite] = React.useState(false);
-    const {handleSaveViewedProduct, handleSaveHeartedProduct} = useProduct();
+const CardProduct: React.FC<Props> = ({product, onViewDetail, isHearted, onHeartToggle}) => {
     const {userId} = useUser();
+    const {handleSaveViewedProduct} = useProduct(userId);
     const discountPrice = product.price - (product.price * product.discountPercent) / 100;
 
 
@@ -24,8 +25,8 @@ const CardProduct: React.FC<Props> = ({product, onViewDetail}) => {
             {product.isHot && (
                 <span
                     className="absolute top-2 left-2 bg-orange-500 text-white text-xs sm:text-sm font-semibold px-2 py-1 rounded">
-            HOT
-        </span>
+                    HOT
+                </span>
             )}
             <img
                 src={product.image}
@@ -53,21 +54,20 @@ const CardProduct: React.FC<Props> = ({product, onViewDetail}) => {
             <div className="flex justify-between items-center mt-2 sm:mt-3 gap-1">
                 <CustomButton onClick={() => {
                     onViewDetail();
-                    handleSaveViewedProduct(userId, product);
+                    handleSaveViewedProduct(product);
                 }} title="Xem chi tiết">
                     <AiOutlineEye className="text-lg sm:text-xl"/>
                     <span className="hidden sm:inline ml-1">Xem chi tiết</span>
                 </CustomButton>
+
                 <LikeButton
-                    isLiked={isFavorite}
-                    onToggle={() => {
-                        handleSaveHeartedProduct(userId, product);
-                        setIsFavorite(!isFavorite);
-                    }}
+                    isLiked={isHearted}
+                    onToggle={() => onHeartToggle(product)}
                 />
+
+
             </div>
         </div>
-
     );
 };
 

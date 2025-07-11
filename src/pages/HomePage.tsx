@@ -6,14 +6,13 @@ import Banner from "../components/Banner.tsx";
 const HomePage = () => {
 
     return (
-        <div className="text-black">
+        <>
             <Header/>
             <Banner/>
-            <div className="p-10">
-                <ProductList/>
-            </div>
+            <ProductList/>
             <Footer/>
-        </div>
+        </>
+
     );
 };
 
