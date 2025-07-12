@@ -1,69 +1,34 @@
-# React + TypeScript + Vite
+# 🚀 Dự án React + Tailwind CSS + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Đây là dự án web được xây dựng bằng **React**, sử dụng **Vite** để bundling và **Tailwind CSS** để thiết kế giao diện.
 
-Currently, two official plugins are available:
+## 🧩 Công nghệ sử dụng
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- ⚛️ React (với hook `useState`, `useEffect`)
+- 💨 Tailwind CSS cho giao diện hiện đại, responsive
+- ⚡ Vite – công cụ bundling siêu nhanh
+- 🛠️ TypeScript – giúp code rõ ràng, dễ bảo trì
+- 🔁 Axios (sử dụng async/await để gọi API)
+- 🧪 Mock dữ liệu phục vụ quá trình phát triển
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📦 Yêu cầu môi trường
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- [Node.js](https://nodejs.org/) phiên bản 16 trở lên
+- npm
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 📁 Cài đặt & Chạy dự án
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+```bash
+# Clone dự án về máy
+git clone https://github.com/PhamThiNgocHoa/ai-learn-hub.git
+cd ai-learn-hub
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+# Cài đặt các thư viện
+npm install
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+# Chạy dự án trong môi trường phát triển
+npm run dev
