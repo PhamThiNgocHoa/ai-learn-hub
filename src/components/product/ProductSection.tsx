@@ -34,7 +34,7 @@ const ProductSection: React.FC<Props> = ({
             if (currentPage > 1) setCurrentPage(currentPage - 1);
         },
         preventScrollOnSwipe: true,
-        trackMouse: false,
+        trackMouse: true,
     });
 
 
