@@ -28,7 +28,7 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                <div>
+                <div className="">
                     <h3 className="text-xl font-semibold mb-4">Kết nối với chúng tôi</h3>
                     <div className="flex space-x-4">
                         <a href="#" className="hover:text-white"><i className="fab fa-facebook-f"></i></a>

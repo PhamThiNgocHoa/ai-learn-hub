@@ -1,6 +1,7 @@
 import {type Product, products} from "../data/types/product";
 import {useEffect, useState} from "react";
 import {
+    deleteHeartedProduct,
     getHeartedProducts,
     getProducts,
     getSuggestedProducts, getViewedProducts,
@@ -12,19 +13,18 @@ import {PriceFilter} from "../data/enum/PriceFilter.ts";
 const useProduct = (userId: string, filter: PriceFilter = PriceFilter.All) => {
     const [productList, setProductList] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
     const [suggestedProducts, setSuggestedProducts] = useState<Product[]>([]);
     const [suggestedLoading, setSuggestedLoading] = useState<boolean>(false);
     const [heartedProducts, setHeartedProducts] = useState<Product[]>([]);
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [viewedProducts, setViewedProducts] = useState<Product[]>([]);
-
+    const [errorMessage, setErrorMessage] = useState<string>("");
 
     useEffect(() => {
         const fetchProducts = async () => {
             setLoading(true);
-            setError(null);
+            setErrorMessage("");
             try {
                 const response = await getProducts();
 
@@ -44,9 +44,8 @@ const useProduct = (userId: string, filter: PriceFilter = PriceFilter.All) => {
                 });
 
                 setProductList(filtered);
-            } catch (err) {
-                console.error("Lỗi khi load sản phẩm:", err);
-                setError("Lỗi khi tải sản phẩm");
+            } catch {
+                setErrorMessage("Đã xảy ra lỗi khi xử lý dữ liệu.");
             } finally {
                 setLoading(false);
             }
@@ -68,18 +67,25 @@ const useProduct = (userId: string, filter: PriceFilter = PriceFilter.All) => {
     const handleSaveViewedProduct = async (product: Product) => {
         try {
             await saveViewedProduct(userId, product);
-        } catch (error) {
-            console.error("Lỗi khi lưu sản phẩm đã xem:", error);
+        } catch {
+            setErrorMessage("Đã xảy ra lỗi khi xử lý dữ liệu.");
         }
     };
 
     const handleToggleHearted = async (product: Product) => {
         try {
-            await saveHeartedProduct(userId, product);
+            const existing = heartedProducts.find((p) => p.id === product.id);
+
+            if (existing) {
+                await deleteHeartedProduct(userId, product.id);
+            } else {
+                await saveHeartedProduct(userId, product);
+            }
+
             const updated = await getHeartedProducts(userId);
             setHeartedProducts(updated);
-        } catch (error) {
-            console.error("Lỗi khi lưu sản phẩm yêu thích:", error);
+        } catch {
+            setErrorMessage("Đã xảy ra lỗi khi xử lý dữ liệu.");
         }
     };
 
@@ -89,8 +95,8 @@ const useProduct = (userId: string, filter: PriceFilter = PriceFilter.All) => {
             const res = await getSuggestedProducts(userId);
             setSuggestedProducts(res);
             console.log("data", res);
-        } catch (err) {
-            console.error("Lỗi khi lấy gợi ý sản phẩm:", err);
+        } catch {
+            setErrorMessage("Không thể lấy gợi ý lúc này");
         } finally {
             setSuggestedLoading(false);
         }
@@ -101,8 +107,8 @@ const useProduct = (userId: string, filter: PriceFilter = PriceFilter.All) => {
             try {
                 const data = await getHeartedProducts(userId);
                 setHeartedProducts(data);
-            } catch (error) {
-                console.error("Lỗi khi lấy sản phẩm yêu thích:", error);
+            } catch {
+                setErrorMessage("Đã xảy ra lỗi khi xử lý dữ liệu.");
             }
         };
 
@@ -116,8 +122,8 @@ const useProduct = (userId: string, filter: PriceFilter = PriceFilter.All) => {
             try {
                 const data = await getViewedProducts(userId);
                 setViewedProducts(data);
-            } catch (error) {
-                console.error("Lỗi khi lấy sản phẩm da xem:", error);
+            } catch {
+                setErrorMessage("Đã xảy ra lỗi khi xử lý dữ liệu.");
             }
         };
 
@@ -153,7 +159,7 @@ const useProduct = (userId: string, filter: PriceFilter = PriceFilter.All) => {
         handleOpenModal,
         handleCloseModal,
         loading,
-        error
+        errorMessage,
     };
 };
 

@@ -62,6 +62,16 @@ mock.onPost("/api/heartedProducts").reply((config) => {
     return [200, {success: true}];
 });
 
+mock.onDelete("/api/heartedProducts").reply((config) => {
+    const { userId, productId } = JSON.parse(config.data);
+    const key = `heartedProducts_${userId}`;
+
+    let data: Product[] = JSON.parse(localStorage.getItem(key) || "[]");
+    data = data.filter((p) => p.id !== productId);
+
+    localStorage.setItem(key, JSON.stringify(data));
+    return [200];
+});
 
 mock.onGet(/\/api\/suggestions\?userId=.*/).reply((config) => {
     const url = new URL(config.url!, window.location.origin);

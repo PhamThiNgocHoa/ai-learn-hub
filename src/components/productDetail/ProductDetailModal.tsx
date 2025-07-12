@@ -22,7 +22,9 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({product, isOpen,
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto">
+        <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto h-screen">
+
             <div className="bg-white rounded-lg p-6 w-full max-w-4xl relative shadow-lg max-h-screen overflow-y-auto">
                 <button
                     onClick={onClose}

@@ -11,7 +11,7 @@ interface ProductFilterProps {
 const ProductFilter = ({filter, setFilter, onSuggestClick, loading}: ProductFilterProps) => {
     return (
         <div className="flex justify-between mt-6">
-            <div className="flex flex-wrap gap-3 mb-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-4">
                 {Object.entries(PriceFilterLabelMap).map(([key, label]) => (
                     <CustomButton
                         key={key}

@@ -24,7 +24,14 @@ export const saveHeartedProduct = async (userId: string, product: Product): Prom
     await axios.post("/api/heartedProducts", { userId, product });
 };
 
+export const deleteHeartedProduct = async (userId: string, productId: string): Promise<void> => {
+    await axios.delete(`/api/heartedProducts`, {
+        data: { userId, productId },
+    });
+};
+
+
 export const getSuggestedProducts = async (userId: string): Promise<Product[]> => {
-    const response = await axios.get(`/api/suggestions?userId=${userId}`);
+    const response = await axios.get(`/api/suggesstions?userId=${userId}`);
     return response.data.data;
 };

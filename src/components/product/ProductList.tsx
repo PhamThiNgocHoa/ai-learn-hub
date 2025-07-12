@@ -6,9 +6,15 @@ import ProductDetailModal from "../productDetail/ProductDetailModal.tsx";
 import ProductSection from "./ProductSection.tsx";
 import {PriceFilter} from "../../data/enum/PriceFilter.ts";
 import {useUser} from "../../hooks/useUser.ts";
+import type {Product} from "../../data/types/product.ts";
+import ErrorMessage from "../ErrorMessage.tsx";
 
+type ProductListProps = {
+    searchTerm: string;
+    searchResults: Product[];
+};
 
-const ProductList = () => {
+const ProductList = ({searchTerm, searchResults}: ProductListProps) => {
     const [filter, setFilter] = useState<PriceFilter>(PriceFilter.All);
     const {userId} = useUser();
     const {
@@ -21,9 +27,9 @@ const ProductList = () => {
         productList,
         suggestedProducts,
         handleGetSuggestedProducts,
-        suggestedLoading
+        suggestedLoading,
+        errorMessage,
     } = useProduct(userId, filter);
-
 
     const [showSuggested, setShowSuggested] = useState(false);
 
@@ -41,7 +47,8 @@ const ProductList = () => {
     };
 
     return (
-        <div className="space-y-6 px-10">
+        <div className="px-10">
+            {errorMessage && <ErrorMessage message={errorMessage} />}
             <ProductFilter
                 filter={filter}
                 setFilter={(f) => {
@@ -51,28 +58,46 @@ const ProductList = () => {
                 onSuggestClick={handleSuggestClick}
                 loading={suggestedLoading}
             />
-
-            {showSuggested ? (
-                <>
-                    {suggestedLoading ? (
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            {[...Array(8)].map((_, i) => (
-                                <div key={i} className="animate-pulse bg-gray-200 h-48 rounded-lg"/>
-                            ))}
-                        </div>
-                    ) : (
-                        <ProductSection
-                            title="Gợi ý cho bạn"
-                            products={suggestedPagination.currentItems}
-                            currentPage={suggestedPagination.currentPage}
-                            totalPages={suggestedPagination.totalPages}
-                            setCurrentPage={suggestedPagination.setCurrentPage}
-                            onViewDetail={handleOpenModal}
-                            heartedProducts={heartedProducts}
-                            handleToggleHearted={handleToggleHearted}
-                        />
-                    )}
-                </>
+            {searchTerm ? (
+                searchResults.length > 0 ? (
+                    <ProductSection
+                        title={`Kết quả cho "${searchTerm}"`}
+                        products={searchResults}
+                        currentPage={1}
+                        totalPages={1}
+                        setCurrentPage={() => {}}
+                        onViewDetail={handleOpenModal}
+                        heartedProducts={heartedProducts}
+                        handleToggleHearted={handleToggleHearted}
+                    />
+                ) : (
+                    <div className="text-center text-gray-500 mt-8 text-lg">
+                        Không tìm thấy sản phẩm phù hợp với "{searchTerm}"
+                    </div>
+                )
+            ) : showSuggested ? (
+                suggestedLoading ? (
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {[...Array(8)].map((_, i) => (
+                            <div key={i} className="animate-pulse bg-gray-200 h-48 rounded-lg"/>
+                        ))}
+                    </div>
+                ) : suggestedPagination.currentItems.length > 0 ? (
+                    <ProductSection
+                        title="Gợi ý tài liệu & khóa học"
+                        products={suggestedPagination.currentItems}
+                        currentPage={suggestedPagination.currentPage}
+                        totalPages={suggestedPagination.totalPages}
+                        setCurrentPage={suggestedPagination.setCurrentPage}
+                        onViewDetail={handleOpenModal}
+                        heartedProducts={heartedProducts}
+                        handleToggleHearted={handleToggleHearted}
+                    />
+                ) : (
+                    <div className="text-center text-gray-500 mt-8 text-lg">
+                        Không có kết quả gợi ý nào.
+                    </div>
+                )
             ) : (
                 <>
                     <ProductSection
@@ -85,7 +110,6 @@ const ProductList = () => {
                         heartedProducts={heartedProducts}
                         handleToggleHearted={handleToggleHearted}
                     />
-
                     <ProductSection
                         title="Khóa học"
                         products={coursePagination.currentItems}
