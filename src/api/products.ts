@@ -32,6 +32,6 @@ export const deleteHeartedProduct = async (userId: string, productId: string): P
 
 
 export const getSuggestedProducts = async (userId: string): Promise<Product[]> => {
-    const response = await axios.get(`/api/suggesstions?userId=${userId}`);
+    const response = await axios.get(`/api/suggestions?userId=${userId}`);
     return response.data.data;
 };

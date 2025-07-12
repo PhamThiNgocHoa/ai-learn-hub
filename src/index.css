@@ -15,4 +15,12 @@
 .animate-fade-slide-up {
     animation: fade-slide-up 0.8s ease-out forwards;
 }
+.scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+}
 
